@@ -1,0 +1,45 @@
+<template>
+  <v-regular-polygon :config="polygonConfig" />
+</template>
+
+<script lang="ts">
+import { Component, Prop, Vue } from "vue-property-decorator";
+
+@Component
+export default class BoidPoly extends Vue {
+  @Prop(Number) readonly posX!: number;
+  @Prop(Number) readonly posY!: number;
+  @Prop(Number) readonly rotation!: number;
+
+  colors = [
+    "#1E5162",
+    "#296E85",
+    "#338BA8",
+    "#43A6C6",
+    "#67B7D1",
+    "#8AC7DB",
+    "#ADD8E6",
+  ];
+
+  getRandomColor(): string {
+    return this.colors[Math.floor(Math.random() * this.colors.length)];
+  }
+
+  polygonConfig = {
+    x: this.posX,
+    y: this.posY,
+    rotation: this.rotation,
+    sides: 3,
+    width: 20,
+    height: 20,
+    scaleX: 0.7,
+    fill: "white",
+    stroke: "gray",
+    strokeWidth: 1,
+  };
+
+  mounted(): void {
+    this.polygonConfig.fill = this.getRandomColor();
+  }
+}
+</script>
