@@ -28,7 +28,7 @@ export default class BoidPoly extends Vue {
   polygonConfig = {
     x: this.posX,
     y: this.posY,
-    rotation: (-this.rotation + 180) % 360,
+    rotation: (this.rotation + 90) % 360,
     sides: 3,
     width: 20,
     height: 20,
