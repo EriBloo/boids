@@ -31,6 +31,17 @@ class Boid implements IBoid {
   rotate(amount: number): void {
     this.rot += amount;
   }
+
+  move(distance: number): void {
+    const x = this.position[0];
+    const y = this.position[1];
+    const angle = ((-this.rotation + 90) % 360) * (Math.PI / 180);
+
+    const newX = x + distance * Math.cos(angle);
+    const newY = y + distance * Math.sin(angle);
+
+    this.position = [parseFloat(newX.toFixed(2)), parseFloat(newY.toFixed(2))];
+  }
 }
 
 export default Boid;
