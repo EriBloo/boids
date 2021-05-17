@@ -33,6 +33,10 @@ export class Boid implements IBoid {
     return this.rot;
   }
 
+  set rotation(rot: number) {
+    this.rot = rot;
+  }
+
   get velocity(): number {
     return this.speed;
   }

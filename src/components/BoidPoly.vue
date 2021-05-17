@@ -33,7 +33,7 @@ export default class BoidPoly extends Vue {
     return {
       x: this.posX,
       y: this.posY,
-      rotation: (this.rotation + 90) % 360,
+      rotation: this.rotation + 90,
       sides: 3,
       width: 20,
       height: 20,

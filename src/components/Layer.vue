@@ -2,9 +2,9 @@
   <v-layer>
     <BoidPoly
       :key="index"
-      v-for="(boid, index) in boids"
-      :posX="normalize(boid.position[0], width)"
-      :posY="normalize(boid.position[1], height)"
+      v-for="(boid, index) in boids.boids"
+      :posX="boid.position[0]"
+      :posY="boid.position[1]"
       :rotation="boid.rotation"
     />
   </v-layer>
