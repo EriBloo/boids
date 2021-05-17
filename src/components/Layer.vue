@@ -15,7 +15,7 @@ import { Component, Prop, Vue } from "vue-property-decorator";
 
 import BoidPoly from "./BoidPoly.vue";
 
-import { Boid } from "../scripts/boid";
+import { Boids } from "../scripts/boids";
 import { modulo } from "../scripts/utils";
 
 @Component({
@@ -25,13 +25,7 @@ export default class Layer extends Vue {
   @Prop(Number) readonly width!: number;
   @Prop(Number) readonly height!: number;
 
-  boids = new Array(100).fill({}).map(() => {
-    return new Boid(
-      Math.random() * this.width,
-      Math.random() * this.height,
-      Math.random() * 360
-    );
-  });
+  boids = new Boids(100, this.width, this.height);
 
   normalize(value: number, max: number): number {
     return modulo(value, max);
@@ -41,9 +35,7 @@ export default class Layer extends Vue {
     setInterval(
       (function (self) {
         return function () {
-          self.boids.map((boid: Boid) => {
-            boid.move();
-          });
+          self.boids.cycle();
         };
       })(this),
       1000 / 60
