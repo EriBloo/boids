@@ -5,6 +5,8 @@
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
 
+import { ShapeConfig } from "konva/types/Shape";
+
 @Component
 export default class BoidPoly extends Vue {
   @Prop(Number) readonly posX!: number;
@@ -25,21 +27,25 @@ export default class BoidPoly extends Vue {
     return this.colors[Math.floor(Math.random() * this.colors.length)];
   }
 
-  polygonConfig = {
-    x: this.posX,
-    y: this.posY,
-    rotation: (this.rotation + 90) % 360,
-    sides: 3,
-    width: 20,
-    height: 20,
-    scaleX: 0.7,
-    fill: "white",
-    stroke: "gray",
-    strokeWidth: 1,
-  };
+  color = "white";
+
+  get polygonConfig(): ShapeConfig {
+    return {
+      x: this.posX,
+      y: this.posY,
+      rotation: (this.rotation + 90) % 360,
+      sides: 3,
+      width: 20,
+      height: 20,
+      scaleX: 0.7,
+      fill: this.color,
+      stroke: "gray",
+      strokeWidth: 1,
+    };
+  }
 
   mounted(): void {
-    this.polygonConfig.fill = this.getRandomColor();
+    this.color = this.getRandomColor();
   }
 }
 </script>

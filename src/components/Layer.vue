@@ -3,8 +3,8 @@
     <BoidPoly
       :key="index"
       v-for="(boid, index) in boids"
-      :posX="boid.position[0]"
-      :posY="boid.position[1]"
+      :posX="normalize(boid.position[0], width)"
+      :posY="normalize(boid.position[1], height)"
       :rotation="boid.rotation"
     />
   </v-layer>
@@ -31,5 +31,22 @@ export default class Layer extends Vue {
       Math.random() * 360
     );
   });
+
+  normalize(value: number, max: number): number {
+    return ((value % max) + max) % max;
+  }
+
+  mounted(): void {
+    setInterval(
+      (function (self) {
+        return function () {
+          self.boids.map((boid: Boid) => {
+            boid.move(4);
+          });
+        };
+      })(this),
+      1000 / 60
+    );
+  }
 }
 </script>
