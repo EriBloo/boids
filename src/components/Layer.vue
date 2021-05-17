@@ -16,6 +16,7 @@ import { Component, Prop, Vue } from "vue-property-decorator";
 import BoidPoly from "./BoidPoly.vue";
 
 import Boid from "../scripts/boid";
+import { modulo } from "../scripts/utils";
 
 @Component({
   components: { BoidPoly },
@@ -33,7 +34,7 @@ export default class Layer extends Vue {
   });
 
   normalize(value: number, max: number): number {
-    return ((value % max) + max) % max;
+    return modulo(value, max);
   }
 
   mounted(): void {
