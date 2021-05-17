@@ -1,19 +1,23 @@
-interface IBoid {
+export interface IBoid {
   position: [number, number];
   rotation: number;
+  velocity: number;
   rotate(amount: number): void;
+  move(): void;
 }
 
-class Boid implements IBoid {
+export class Boid implements IBoid {
   private x;
   private y;
   private rot;
+  private speed;
   private precision = 2;
 
   constructor(x: number, y: number, rot: number) {
     this.x = parseFloat(x.toFixed(this.precision));
     this.y = parseFloat(y.toFixed(this.precision));
     this.rot = rot;
+    this.speed = 4;
   }
 
   get position(): [number, number] {
@@ -29,20 +33,24 @@ class Boid implements IBoid {
     return this.rot;
   }
 
+  get velocity(): number {
+    return this.speed;
+  }
+
+  set velocity(vel: number) {
+    this.speed = vel;
+  }
+
   rotate(amount: number): void {
     this.rot += amount;
   }
 
-  move(distance: number): void {
-    const x = this.position[0];
-    const y = this.position[1];
+  move(): void {
     const angle = this.rotation * (Math.PI / 180);
 
-    const newX = x + distance * Math.cos(angle);
-    const newY = y + distance * Math.sin(angle);
+    const newX = this.x + this.speed * Math.cos(angle);
+    const newY = this.y + this.speed * Math.sin(angle);
 
     this.position = [newX, newY];
   }
 }
-
-export default Boid;

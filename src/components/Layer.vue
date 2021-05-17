@@ -15,7 +15,7 @@ import { Component, Prop, Vue } from "vue-property-decorator";
 
 import BoidPoly from "./BoidPoly.vue";
 
-import Boid from "../scripts/boid";
+import { Boid } from "../scripts/boid";
 import { modulo } from "../scripts/utils";
 
 @Component({
@@ -42,7 +42,7 @@ export default class Layer extends Vue {
       (function (self) {
         return function () {
           self.boids.map((boid: Boid) => {
-            boid.move(4);
+            boid.move();
           });
         };
       })(this),
