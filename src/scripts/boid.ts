@@ -8,10 +8,11 @@ class Boid implements IBoid {
   private x;
   private y;
   private rot;
+  private precision = 2;
 
   constructor(x: number, y: number, rot: number) {
-    this.x = x;
-    this.y = y;
+    this.x = parseFloat(x.toFixed(this.precision));
+    this.y = parseFloat(y.toFixed(this.precision));
     this.rot = rot;
   }
 
@@ -20,8 +21,8 @@ class Boid implements IBoid {
   }
 
   set position(pos: [number, number]) {
-    this.x = pos[0];
-    this.y = pos[1];
+    this.x = parseFloat(pos[0].toFixed(this.precision));
+    this.y = parseFloat(pos[1].toFixed(this.precision));
   }
 
   get rotation(): number {
@@ -40,7 +41,7 @@ class Boid implements IBoid {
     const newX = x + distance * Math.cos(angle);
     const newY = y + distance * Math.sin(angle);
 
-    this.position = [parseFloat(newX.toFixed(2)), parseFloat(newY.toFixed(2))];
+    this.position = [newX, newY];
   }
 }
 
