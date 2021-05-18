@@ -11,7 +11,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Component, Prop, Watch, Vue } from "vue-property-decorator";
 
 import BoidPoly from "./BoidPoly.vue";
 
@@ -40,6 +40,16 @@ export default class Layer extends Vue {
       })(this),
       1000 / 60
     );
+  }
+
+  @Watch("width")
+  onWidthChange(w: number): void {
+    this.boids.domainWidth = w;
+  }
+
+  @Watch("height")
+  onHeightChange(h: number): void {
+    this.boids.domainWidth = h;
   }
 }
 </script>

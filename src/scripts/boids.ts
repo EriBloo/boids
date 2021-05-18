@@ -4,13 +4,15 @@ import { modulo } from "./utils";
 
 export interface IBoids {
   boids: IBoid[];
+  domainWidth: number;
+  domainHeight: number;
 }
 
 export class Boids implements IBoids {
   boids: Boid[];
   private count: number;
-  private domainWidth: number;
-  private domainHeight: number;
+  domainWidth: number;
+  domainHeight: number;
 
   constructor(count: number, domainWidth: number, domainHeight: number) {
     this.boids = new Array(count).fill({}).map(() => {
