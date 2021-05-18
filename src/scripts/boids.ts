@@ -17,14 +17,13 @@ export class Boids implements IBoids {
       return new Boid(
         Math.random() * domainWidth,
         Math.random() * domainHeight,
+        Math.random() * 4 + 2,
         Math.random() * 360
       );
     });
     this.count = count;
     this.domainWidth = domainWidth;
     this.domainHeight = domainHeight;
-
-    this.boids.map((boid) => (boid.velocity = Math.random() * 4 + 2));
   }
 
   normalizePosition(position: [number, number]): [number, number] {
@@ -40,9 +39,7 @@ export class Boids implements IBoids {
   cycle(): void {
     this.boids.map((boid) => {
       boid.move();
-      boid.rotate(2);
       boid.position = this.normalizePosition(boid.position);
-      boid.rotation = this.normalizeRotation(boid.rotation);
     });
   }
 }

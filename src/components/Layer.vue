@@ -5,7 +5,7 @@
       v-for="(boid, index) in boids.boids"
       :posX="boid.position[0]"
       :posY="boid.position[1]"
-      :rotation="boid.rotation"
+      :rotation="boid.velocity[1]"
     />
   </v-layer>
 </template>
