@@ -69,9 +69,11 @@ export class Boids implements IBoids {
     this.boids.map((boid) => {
       const separation = this.separation(boid);
 
-      boid.velocity = vectorOperations.add(
-        boid.velocity,
-        vectorOperations.cartesianToPolar(separation)
+      boid.velocity = vectorOperations.cartesianToPolar(
+        vectorOperations.add(
+          vectorOperations.polarToCartesian(boid.velocity),
+          separation
+        )
       );
 
       boid.velocity = this.normalizeVelocity(boid.velocity);
