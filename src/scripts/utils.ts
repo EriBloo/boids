@@ -23,11 +23,15 @@ export function degreeToRadian(angle: number): number {
 }
 
 export const vectorOperations = ((): IVectorOperations => {
-  const add = (vector1: Vector2d, vector2: Vector2d): Vector2d => {
-    return [vector1[0] + vector2[0], vector1[1] + vector2[1]];
+  const add = (first: Vector2d, ...vectors: Vector2d[]): Vector2d => {
+    return vectors.reduce((prevVector: Vector2d, currVector: Vector2d) => {
+      return [prevVector[0] + currVector[0], prevVector[1] + currVector[1]];
+    }, first);
   };
-  const subtract = (vector1: Vector2d, vector2: Vector2d): Vector2d => {
-    return [vector1[0] - vector2[0], vector1[1] - vector2[1]];
+  const subtract = (first: Vector2d, ...vectors: Vector2d[]): Vector2d => {
+    return vectors.reduce((prevVector: Vector2d, currVector: Vector2d) => {
+      return [prevVector[0] - currVector[0], prevVector[1] - currVector[1]];
+    }, first);
   };
   const invert = (vector: Vector2d): Vector2d => {
     return [-vector[0], -vector[1]];
