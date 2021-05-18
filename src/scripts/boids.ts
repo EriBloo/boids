@@ -16,7 +16,6 @@ export class Boids implements IBoids {
   private maxSpeed = 4;
   private viewAngle = 80;
   private separationDistance = 20;
-  private separationFactor = 1;
 
   constructor(count: number, domainWidth: number, domainHeight: number) {
     let id = 0;
@@ -52,12 +51,12 @@ export class Boids implements IBoids {
     return this.boids.reduce((vector: Vector2d, other: Boid) => {
       if (boid.id !== other.id) {
         const distanceVector = vectorOperations.subtract(
-          other.position,
-          boid.position
+          boid.position,
+          other.position
         );
 
         if (vectorOperations.length(distanceVector) < this.separationDistance) {
-          return vectorOperations.subtract(vector, distanceVector);
+          return vectorOperations.add(vector, distanceVector);
         }
       }
 

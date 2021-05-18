@@ -1,8 +1,9 @@
+import { vectorOperations } from "./utils";
+
 export interface IBoid {
   readonly id: number;
   position: [number, number];
   velocity: [number, number];
-  rotate(amount: number): void;
   move(): void;
 }
 
@@ -46,16 +47,10 @@ export class Boid implements IBoid {
     this.rotation = vel[1];
   }
 
-  rotate(amount: number): void {
-    this.rotation += amount;
-  }
-
   move(): void {
-    const angle = this.rotation * (Math.PI / 180);
-
-    const newX = this.x + this.speed * Math.cos(angle);
-    const newY = this.y + this.speed * Math.sin(angle);
-
-    this.position = [newX, newY];
+    this.position = vectorOperations.add(
+      this.position,
+      vectorOperations.polarToCartesian(this.velocity)
+    );
   }
 }
