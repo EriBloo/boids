@@ -41,9 +41,28 @@ export const vectorOperations = ((): IVectorOperations => {
   };
   const cartesianToPolar = (vector: Vector2d): Vector2d => {
     const r = length(vector);
-    const angle = radianToDegree(Math.atan(vector[1] / vector[0]));
+    let angle = 0;
 
-    return [r, angle];
+    if (vector[0] === 0) {
+      if (vector[1] > 0) {
+        angle = 90;
+      } else if (vector[1] < 0) {
+        angle = 270;
+      }
+      return [r, angle];
+    }
+
+    angle = Math.atan(vector[1] / vector[0]);
+
+    if (vector[0] < 0) {
+      angle += Math.PI;
+    }
+
+    if (angle < 0) {
+      angle += 2 * Math.PI;
+    }
+
+    return [r, radianToDegree(angle)];
   };
   const polarToCartesian = (vector: Vector2d): Vector2d => {
     const x = vector[0] * Math.cos(degreeToRadian(vector[1]));

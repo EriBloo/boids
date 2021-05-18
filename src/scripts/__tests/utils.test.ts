@@ -32,4 +32,9 @@ test("cartesian to polar", () => {
     25.5,
     1
   );
+  expect(
+    vectorOperations.cartesianToPolar(
+      vectorOperations.polarToCartesian([20, 122])
+    )
+  ).toEqual([20, 122]);
 });
