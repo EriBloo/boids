@@ -50,13 +50,15 @@ export class Boids implements IBoids {
   separation(boid: Boid): Vector2d {
     return this.boids.reduce((vector: Vector2d, other: Boid) => {
       if (boid.id !== other.id) {
-        const distanceVector = vectorOperations.subtract(
+        const separationVector = vectorOperations.subtract(
           boid.position,
           other.position
         );
 
-        if (vectorOperations.length(distanceVector) < this.separationDistance) {
-          return vectorOperations.add(vector, distanceVector);
+        if (
+          vectorOperations.length(separationVector) < this.separationDistance
+        ) {
+          return vectorOperations.add(vector, separationVector);
         }
       }
 
