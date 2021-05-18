@@ -1,4 +1,5 @@
 export interface IBoid {
+  readonly id: number;
   position: [number, number];
   velocity: [number, number];
   rotate(amount: number): void;
@@ -6,13 +7,21 @@ export interface IBoid {
 }
 
 export class Boid implements IBoid {
+  readonly id;
   private x;
   private y;
   private rotation;
   private speed;
   private precision = 2;
 
-  constructor(x: number, y: number, speed: number, rotation: number) {
+  constructor(
+    id: number,
+    x: number,
+    y: number,
+    speed: number,
+    rotation: number
+  ) {
+    this.id = id;
     this.x = parseFloat(x.toFixed(this.precision));
     this.y = parseFloat(y.toFixed(this.precision));
     this.speed = speed;
