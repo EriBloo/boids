@@ -30,7 +30,7 @@ export default class Layer extends Vue {
     setInterval(
       (function (self) {
         return function () {
-          self.boids.cycle();
+          self.boids.update();
         };
       })(this),
       1000 / 60

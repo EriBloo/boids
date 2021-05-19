@@ -8,6 +8,7 @@ export interface IBoidsController {
   boids: IBoid[];
   domainWidth: number;
   domainHeight: number;
+  update(): void;
 }
 
 export class BoidsController implements IBoidsController {
@@ -49,7 +50,7 @@ export class BoidsController implements IBoidsController {
     );
   }
 
-  separation(boid: Boid): Vector {
+  private separation(boid: Boid): Vector {
     // calculates separation between boid and nearby boids
     const viewRadius = this.viewRadius;
     return this.boids.reduce((vector: Vector, other: Boid) => {
@@ -66,7 +67,7 @@ export class BoidsController implements IBoidsController {
     }, Vector.zero());
   }
 
-  alignment(boid: Boid): Vector {
+  private alignment(boid: Boid): Vector {
     const viewRadius = this.viewRadius;
     return this.boids
       .reduce((vector: Vector, other: Boid) => {
@@ -82,7 +83,7 @@ export class BoidsController implements IBoidsController {
       .div(this.boids.length); // fix
   }
 
-  cycle(): void {
+  update(): void {
     this.boids.map((boid) => {
       const separation = this.separation(boid);
       const alignment = this.alignment(boid);
