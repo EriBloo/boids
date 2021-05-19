@@ -15,7 +15,7 @@ export class Boids implements IBoids {
   domainHeight: number;
   private maxSpeed = 4;
   private viewAngle = 80;
-  private separationDistance = 20;
+  private separationDistance = 100;
 
   constructor(count: number, domainWidth: number, domainHeight: number) {
     let id = 0;
@@ -25,7 +25,7 @@ export class Boids implements IBoids {
         id,
         Math.random() * domainWidth,
         Math.random() * domainHeight,
-        Math.random() * 2 + 2,
+        4,
         Math.random() * 360
       );
     });
@@ -48,17 +48,20 @@ export class Boids implements IBoids {
   }
 
   separation(boid: Boid): Vector2d {
+    const separationDistance = this.separationDistance;
     return this.boids.reduce((vector: Vector2d, other: Boid) => {
       if (boid.id !== other.id) {
         const separationVector = vectorOperations.subtract(
-          boid.position,
-          other.position
+          other.position,
+          boid.position
         );
+        const sqrDst = Math.pow(vectorOperations.length(separationVector), 2);
 
-        if (
-          vectorOperations.length(separationVector) < this.separationDistance
-        ) {
-          return vectorOperations.add(vector, separationVector);
+        if (sqrDst < Math.pow(separationDistance, 2)) {
+          return vectorOperations.subtract(
+            vector,
+            vectorOperations.multByScalar(separationVector, 1 / sqrDst)
+          );
         }
       }
 
