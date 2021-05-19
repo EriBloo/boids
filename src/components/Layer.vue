@@ -3,9 +3,9 @@
     <BoidPoly
       :key="index"
       v-for="(boid, index) in boids.boids"
-      :posX="boid.position[0]"
-      :posY="boid.position[1]"
-      :rotation="boid.velocity[1]"
+      :posX="boid.position.x"
+      :posY="boid.position.y"
+      :rotation="boid.velocity.angle"
     />
   </v-layer>
 </template>

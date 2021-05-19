@@ -1,6 +1,8 @@
 import { IBoid, Boid } from "./boid";
 
-import { Vector2d, modulo, vectorOperations } from "./utils";
+import { modulo, clamp } from "./utils/functions";
+
+import { Vector } from "./utils/vector";
 
 export interface IBoids {
   boids: IBoid[];
@@ -32,69 +34,52 @@ export class Boids implements IBoids {
     this.domainHeight = domainHeight;
   }
 
-  private normalizePosition(position: [number, number]): [number, number] {
+  private normalizePosition(position: Vector): Vector {
     // prevents boids from going out of bounds
-    return [
-      modulo(position[0], this.domainWidth),
-      modulo(position[1], this.domainHeight),
-    ];
+    return new Vector(
+      modulo(position.x, this.domainWidth),
+      modulo(position.y, this.domainHeight)
+    );
   }
-  private normalizeVelocity(velocity: [number, number]): [number, number] {
+  private normalizeVelocity(velocity: Vector): Vector {
     // locks boids between min and max speed and within 0-359 angle
-    return [
-      velocity[0] > this.maxSpeed
-        ? this.maxSpeed
-        : velocity[0] < this.minSpeed
-        ? this.minSpeed
-        : velocity[0],
-      modulo(velocity[1], 360),
-    ];
+    return Vector.fromPolar(
+      clamp(velocity.magnitude, this.minSpeed, this.maxSpeed),
+      modulo(velocity.angle, 360)
+    );
   }
 
-  separation(boid: Boid): Vector2d {
+  separation(boid: Boid): Vector {
     // calculates separation between boid and nearby boids
     const viewRadius = this.viewRadius;
-    return this.boids.reduce((vector: Vector2d, other: Boid) => {
+    return this.boids.reduce((vector: Vector, other: Boid) => {
       if (boid.id !== other.id) {
-        const distanceVector = vectorOperations.subtract(
-          other.position,
-          boid.position
-        );
-        const sqrDst = Math.pow(vectorOperations.length(distanceVector), 2);
+        const distanceVector = other.position.sub(boid.position);
+        const sqrDst = Math.pow(distanceVector.magnitude, 2);
 
         if (sqrDst < Math.pow(viewRadius, 2) && boid.visible(other)) {
-          return vectorOperations.subtract(
-            vector,
-            vectorOperations.multByScalar(distanceVector, 1 / sqrDst)
-          );
+          return vector.sub(distanceVector.div(sqrDst));
         }
       }
 
       return vector;
-    }, vectorOperations.zeroVector());
+    }, Vector.zero());
   }
 
-  alignment(boid: Boid): Vector2d {
+  alignment(boid: Boid): Vector {
     const viewRadius = this.viewRadius;
-    return vectorOperations.multByScalar(
-      this.boids.reduce((vector: Vector2d, other: Boid) => {
+    return this.boids
+      .reduce((vector: Vector, other: Boid) => {
         if (boid.id !== other.id) {
-          const distanceVector = vectorOperations.subtract(
-            other.position,
-            boid.position
-          );
-          const sqrDst = Math.pow(vectorOperations.length(distanceVector), 2);
+          const distanceVector = other.position.sub(boid.position);
+          const sqrDst = Math.pow(distanceVector.magnitude, 2);
           if (sqrDst < Math.pow(viewRadius, 2) && boid.visible(other)) {
-            return vectorOperations.add(
-              vector,
-              vectorOperations.polarToCartesian(other.velocity)
-            );
+            return vector.add(other.velocity);
           }
         }
         return vector;
-      }, vectorOperations.zeroVector()),
-      1 / this.boids.length
-    );
+      }, Vector.zero())
+      .div(this.boids.length); // fix
   }
 
   cycle(): void {
@@ -102,19 +87,12 @@ export class Boids implements IBoids {
       const separation = this.separation(boid);
       const alignment = this.alignment(boid);
 
-      boid.velocity = vectorOperations.cartesianToPolar(
-        vectorOperations.add(
-          vectorOperations.polarToCartesian(boid.velocity),
-          separation,
-          alignment
-        )
-      );
+      boid.velocity = boid.velocity.add(separation).add(alignment);
 
       boid.velocity = this.normalizeVelocity(boid.velocity);
     });
     this.boids.map((boid) => {
       boid.move();
-
       boid.position = this.normalizePosition(boid.position);
     });
   }

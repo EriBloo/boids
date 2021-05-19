@@ -1,10 +1,11 @@
-import { vectorOperations } from "./utils";
+import { Vector } from "./utils/vector";
 
 export interface IBoid {
   readonly id: number;
-  position: [number, number];
-  velocity: [number, number];
+  position: Vector;
+  velocity: Vector;
   move(): void;
+  visible(boid: Boid): boolean;
 }
 
 export class Boid implements IBoid {
@@ -29,35 +30,33 @@ export class Boid implements IBoid {
     this.rotation = rotation;
   }
 
-  get position(): [number, number] {
-    return [this.x, this.y];
+  get position(): Vector {
+    return new Vector(this.x, this.y);
   }
 
-  set position(pos: [number, number]) {
-    [this.x, this.y] = pos;
+  set position(vector: Vector) {
+    this.x = vector.x;
+    this.y = vector.y;
   }
 
-  get velocity(): [number, number] {
-    return [this.speed, this.rotation];
+  get velocity(): Vector {
+    return Vector.fromPolar(this.speed, this.rotation);
   }
 
-  set velocity(vel: [number, number]) {
-    [this.speed, this.rotation] = vel;
+  set velocity(vector: Vector) {
+    this.speed = vector.magnitude;
+    this.rotation = vector.angle;
   }
 
   move(): void {
     // move boid
-    this.position = vectorOperations.add(
-      this.position,
-      vectorOperations.polarToCartesian(this.velocity)
-    );
+    this.position = this.position.add(this.velocity);
   }
 
   visible(boid: Boid): boolean {
     // check if other boid is visible by this boid
-    const angle = vectorOperations.subtract(boid.position, this.position);
-    const polarAngle = vectorOperations.cartesianToPolar(angle);
-    const angleDiff = Math.abs(polarAngle[1] - this.rotation);
+    const angle = boid.position.sub(this.position);
+    const angleDiff = Math.abs(angle.magnitude - this.rotation);
 
     if (angleDiff < this.viewAngle || angleDiff > 360 - this.viewAngle) {
       return true;
