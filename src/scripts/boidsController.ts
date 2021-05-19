@@ -4,13 +4,13 @@ import { modulo, clamp } from "./utils/functions";
 
 import { Vector } from "./utils/vector";
 
-export interface IBoids {
+export interface IBoidsController {
   boids: IBoid[];
   domainWidth: number;
   domainHeight: number;
 }
 
-export class Boids implements IBoids {
+export class BoidsController implements IBoidsController {
   boids: Boid[];
   private count: number;
   domainWidth: number;

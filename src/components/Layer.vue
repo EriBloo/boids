@@ -15,7 +15,7 @@ import { Component, Prop, Watch, Vue } from "vue-property-decorator";
 
 import BoidPoly from "./BoidPoly.vue";
 
-import { Boids } from "../scripts/boids";
+import { BoidsController } from "../scripts/boidsController";
 
 @Component({
   components: { BoidPoly },
@@ -24,7 +24,7 @@ export default class Layer extends Vue {
   @Prop(Number) readonly width!: number;
   @Prop(Number) readonly height!: number;
 
-  boids = new Boids(100, this.width, this.height);
+  boids = new BoidsController(100, this.width, this.height);
 
   mounted(): void {
     setInterval(
