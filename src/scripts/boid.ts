@@ -60,7 +60,7 @@ export class Boid implements IBoid {
     const polarAngle = vectorOperations.cartesianToPolar(angle);
     const angleDiff = Math.abs(polarAngle[1] - this.rotation);
 
-    if (angleDiff < this.viewAngle || angleDiff > this.viewAngle * 2) {
+    if (angleDiff < this.viewAngle || angleDiff > 360 - this.viewAngle) {
       return true;
     }
     return false;
