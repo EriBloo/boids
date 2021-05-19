@@ -15,7 +15,7 @@ export class Boids implements IBoids {
   domainHeight: number;
   private maxSpeed = 6;
   private minSpeed = 4;
-  private separationDistance = 50;
+  private viewRadius = 50;
 
   constructor(count: number, domainWidth: number, domainHeight: number) {
     this.boids = new Array(count).fill({}).map((_, index) => {
@@ -53,19 +53,19 @@ export class Boids implements IBoids {
 
   separation(boid: Boid): Vector2d {
     // calculates separation between boid and nearby boids
-    const separationDistance = this.separationDistance;
+    const viewRadius = this.viewRadius;
     return this.boids.reduce((vector: Vector2d, other: Boid) => {
       if (boid.id !== other.id) {
-        const separationVector = vectorOperations.subtract(
+        const distanceVector = vectorOperations.subtract(
           other.position,
           boid.position
         );
-        const sqrDst = Math.pow(vectorOperations.length(separationVector), 2);
+        const sqrDst = Math.pow(vectorOperations.length(distanceVector), 2);
 
-        if (sqrDst < Math.pow(separationDistance, 2) && boid.visible(other)) {
+        if (sqrDst < Math.pow(viewRadius, 2) && boid.visible(other)) {
           return vectorOperations.subtract(
             vector,
-            vectorOperations.multByScalar(separationVector, 1 / sqrDst)
+            vectorOperations.multByScalar(distanceVector, 1 / sqrDst)
           );
         }
       }
