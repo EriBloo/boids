@@ -74,14 +74,37 @@ export class Boids implements IBoids {
     }, vectorOperations.zeroVector());
   }
 
+  alignment(boid: Boid): Vector2d {
+    return vectorOperations.multByScalar(
+      vectorOperations.subtract(
+        vectorOperations.multByScalar(
+          this.boids.reduce((vector: Vector2d, other: Boid) => {
+            if (boid.id !== other.id) {
+              return vectorOperations.add(
+                vector,
+                vectorOperations.polarToCartesian(other.velocity)
+              );
+            }
+            return vector;
+          }, vectorOperations.zeroVector()),
+          1 / this.boids.length
+        ),
+        vectorOperations.polarToCartesian(boid.velocity)
+      ),
+      1 / 8
+    );
+  }
+
   cycle(): void {
     this.boids.map((boid) => {
       const separation = this.separation(boid);
+      const alignment = this.alignment(boid);
 
       boid.velocity = vectorOperations.cartesianToPolar(
         vectorOperations.add(
           vectorOperations.polarToCartesian(boid.velocity),
-          separation
+          separation,
+          alignment
         )
       );
 
