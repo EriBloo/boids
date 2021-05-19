@@ -1,8 +1,8 @@
 export type Vector2d = [number, number];
 
 interface IVectorOperations {
-  add(vector1: Vector2d, vector2: Vector2d): Vector2d;
-  subtract(vector1: Vector2d, vector2: Vector2d): Vector2d;
+  add(first: Vector2d, ...vectors: Vector2d[]): Vector2d;
+  subtract(first: Vector2d, ...vectors: Vector2d[]): Vector2d;
   invert(vector: Vector2d): Vector2d;
   length(vector: Vector2d): number;
   cartesianToPolar(vector: Vector2d): Vector2d;
