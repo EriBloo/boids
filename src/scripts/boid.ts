@@ -14,6 +14,7 @@ export class Boid implements IBoid {
   private rotation;
   private speed;
   private precision = 2;
+  private viewAngle = 120;
 
   constructor(
     id: number,
@@ -52,5 +53,16 @@ export class Boid implements IBoid {
       this.position,
       vectorOperations.polarToCartesian(this.velocity)
     );
+  }
+
+  visible(boid: Boid): boolean {
+    const angle = vectorOperations.subtract(boid.position, this.position);
+    const polarAngle = vectorOperations.cartesianToPolar(angle);
+    const angleDiff = Math.abs(polarAngle[1] - this.rotation);
+
+    if (angleDiff < this.viewAngle || angleDiff > this.viewAngle * 2) {
+      return true;
+    }
+    return false;
   }
 }

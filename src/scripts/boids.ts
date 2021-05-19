@@ -15,8 +15,7 @@ export class Boids implements IBoids {
   domainHeight: number;
   private maxSpeed = 6;
   private minSpeed = 4;
-  private viewAngle = 80;
-  private separationDistance = 100;
+  private separationDistance = 50;
 
   constructor(count: number, domainWidth: number, domainHeight: number) {
     this.boids = new Array(count).fill({}).map((_, index) => {
@@ -60,7 +59,7 @@ export class Boids implements IBoids {
         );
         const sqrDst = Math.pow(vectorOperations.length(separationVector), 2);
 
-        if (sqrDst < Math.pow(separationDistance, 2)) {
+        if (sqrDst < Math.pow(separationDistance, 2) && boid.visible(other)) {
           return vectorOperations.subtract(
             vector,
             vectorOperations.multByScalar(separationVector, 1 / sqrDst)
