@@ -75,23 +75,25 @@ export class Boids implements IBoids {
   }
 
   alignment(boid: Boid): Vector2d {
+    const viewRadius = this.viewRadius;
     return vectorOperations.multByScalar(
-      vectorOperations.subtract(
-        vectorOperations.multByScalar(
-          this.boids.reduce((vector: Vector2d, other: Boid) => {
-            if (boid.id !== other.id) {
-              return vectorOperations.add(
-                vector,
-                vectorOperations.polarToCartesian(other.velocity)
-              );
-            }
-            return vector;
-          }, vectorOperations.zeroVector()),
-          1 / this.boids.length
-        ),
-        vectorOperations.polarToCartesian(boid.velocity)
-      ),
-      1 / 8
+      this.boids.reduce((vector: Vector2d, other: Boid) => {
+        if (boid.id !== other.id) {
+          const distanceVector = vectorOperations.subtract(
+            other.position,
+            boid.position
+          );
+          const sqrDst = Math.pow(vectorOperations.length(distanceVector), 2);
+          if (sqrDst < Math.pow(viewRadius, 2) && boid.visible(other)) {
+            return vectorOperations.add(
+              vector,
+              vectorOperations.polarToCartesian(other.velocity)
+            );
+          }
+        }
+        return vector;
+      }, vectorOperations.zeroVector()),
+      1 / this.boids.length
     );
   }
 
