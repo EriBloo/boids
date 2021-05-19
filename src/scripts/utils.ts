@@ -8,6 +8,7 @@ interface IVectorOperations {
   cartesianToPolar(vector: Vector2d): Vector2d;
   polarToCartesian(vector: Vector2d): Vector2d;
   zeroVector(): Vector2d;
+  multByScalar(vector: Vector2d, scalar: number): Vector2d;
 }
 
 export function modulo(value: number, max: number): number {
@@ -73,6 +74,9 @@ export const vectorOperations = ((): IVectorOperations => {
   const zeroVector = (): Vector2d => {
     return [0, 0];
   };
+  const multByScalar = (vector: Vector2d, scalar: number): Vector2d => {
+    return [vector[0] * scalar, vector[1] * scalar];
+  };
 
   return {
     add,
@@ -82,5 +86,6 @@ export const vectorOperations = ((): IVectorOperations => {
     cartesianToPolar,
     polarToCartesian,
     zeroVector,
+    multByScalar,
   };
 })();
