@@ -13,7 +13,6 @@ export class Boid implements IBoid {
   private y;
   private rotation;
   private speed;
-  private precision = 2;
   private viewAngle = 120;
 
   constructor(
@@ -24,8 +23,8 @@ export class Boid implements IBoid {
     rotation: number
   ) {
     this.id = id;
-    this.x = parseFloat(x.toFixed(this.precision));
-    this.y = parseFloat(y.toFixed(this.precision));
+    this.x = x;
+    this.y = y;
     this.speed = speed;
     this.rotation = rotation;
   }
@@ -35,8 +34,7 @@ export class Boid implements IBoid {
   }
 
   set position(pos: [number, number]) {
-    this.x = parseFloat(pos[0].toFixed(this.precision));
-    this.y = parseFloat(pos[1].toFixed(this.precision));
+    [this.x, this.y] = pos;
   }
 
   get velocity(): [number, number] {
@@ -44,11 +42,11 @@ export class Boid implements IBoid {
   }
 
   set velocity(vel: [number, number]) {
-    this.speed = vel[0];
-    this.rotation = vel[1];
+    [this.speed, this.rotation] = vel;
   }
 
   move(): void {
+    // move boid
     this.position = vectorOperations.add(
       this.position,
       vectorOperations.polarToCartesian(this.velocity)
@@ -56,6 +54,7 @@ export class Boid implements IBoid {
   }
 
   visible(boid: Boid): boolean {
+    // check if other boid is visible by this boid
     const angle = vectorOperations.subtract(boid.position, this.position);
     const polarAngle = vectorOperations.cartesianToPolar(angle);
     const angleDiff = Math.abs(polarAngle[1] - this.rotation);

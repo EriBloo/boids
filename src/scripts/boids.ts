@@ -33,12 +33,14 @@ export class Boids implements IBoids {
   }
 
   private normalizePosition(position: [number, number]): [number, number] {
+    // prevents boids from going out of bounds
     return [
       modulo(position[0], this.domainWidth),
       modulo(position[1], this.domainHeight),
     ];
   }
   private normalizeVelocity(velocity: [number, number]): [number, number] {
+    // locks boids between min and max speed and within 0-359 angle
     return [
       velocity[0] > this.maxSpeed
         ? this.maxSpeed
@@ -50,6 +52,7 @@ export class Boids implements IBoids {
   }
 
   separation(boid: Boid): Vector2d {
+    // calculates separation between boid and nearby boids
     const separationDistance = this.separationDistance;
     return this.boids.reduce((vector: Vector2d, other: Boid) => {
       if (boid.id !== other.id) {
