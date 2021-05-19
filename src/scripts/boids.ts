@@ -19,11 +19,9 @@ export class Boids implements IBoids {
   private separationDistance = 100;
 
   constructor(count: number, domainWidth: number, domainHeight: number) {
-    let id = 0;
-    this.boids = new Array(count).fill({}).map(() => {
-      id += 1;
+    this.boids = new Array(count).fill({}).map((_, index) => {
       return new Boid(
-        id,
+        index,
         Math.random() * domainWidth,
         Math.random() * domainHeight,
         Math.random() * (this.maxSpeed - this.minSpeed) + this.minSpeed,
