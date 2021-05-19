@@ -5,14 +5,6 @@ test("returns correct position", () => {
   expect(boid.position).toEqual([10, 2]);
 });
 
-test("sets correct rotation", () => {
-  const boid = new Boid(1, 2, 2, 4, 243);
-  boid.rotate(23);
-  expect(boid.velocity).toEqual([4, 266]);
-  boid.rotate(-116);
-  expect(boid.velocity).toEqual([4, 150]);
-});
-
 test("move correct distance when rotation is 0", () => {
   const boid = new Boid(1, 10, 10, 4, 0);
   boid.move();
