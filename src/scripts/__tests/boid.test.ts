@@ -35,14 +35,20 @@ test("move correct distance when rotation is 360", () => {
   expect(boid.position).toEqual([14, 10]);
 });
 
-test("can see other boid", () => {
+test("can see other boid (120 degree vision)", () => {
   const boid1 = new Boid(1, 10, 10, 4, 0);
   const boid2 = new Boid(1, 12, 12, 4, 140);
+  const boid3 = new Boid(1, 10, 12, 4, 12);
+  const boid4 = new Boid(1, 9, 14, 4, 12);
   expect(boid1.visible(boid2)).toBeTruthy();
+  expect(boid1.visible(boid3)).toBeTruthy();
+  expect(boid1.visible(boid4)).toBeTruthy();
 });
 
-test("can't see other boid", () => {
+test("can't see other boid (120 degree vision)", () => {
   const boid1 = new Boid(1, 10, 10, 4, 0);
   const boid2 = new Boid(1, 8, 10, 4, 140);
+  const boid3 = new Boid(1, 8, 12, 4, 122);
   expect(boid1.visible(boid2)).toBeFalsy();
+  expect(boid1.visible(boid3)).toBeFalsy();
 });
