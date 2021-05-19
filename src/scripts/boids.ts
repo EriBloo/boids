@@ -13,7 +13,8 @@ export class Boids implements IBoids {
   private count: number;
   domainWidth: number;
   domainHeight: number;
-  private maxSpeed = 4;
+  private maxSpeed = 6;
+  private minSpeed = 4;
   private viewAngle = 80;
   private separationDistance = 100;
 
@@ -25,7 +26,7 @@ export class Boids implements IBoids {
         id,
         Math.random() * domainWidth,
         Math.random() * domainHeight,
-        4,
+        Math.random() * (this.maxSpeed - this.minSpeed) + this.minSpeed,
         Math.random() * 360
       );
     });
@@ -42,7 +43,11 @@ export class Boids implements IBoids {
   }
   private normalizeVelocity(velocity: [number, number]): [number, number] {
     return [
-      velocity[0] > this.maxSpeed ? this.maxSpeed : velocity[0],
+      velocity[0] > this.maxSpeed
+        ? this.maxSpeed
+        : velocity[0] < this.minSpeed
+        ? this.minSpeed
+        : velocity[0],
       modulo(velocity[1], 360),
     ];
   }
