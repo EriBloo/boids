@@ -50,27 +50,19 @@ export class Vector implements IVector {
   }
 
   add(vector: Vector): Vector {
-    this.x += vector.x;
-    this.y += vector.y;
-    return this;
+    return new Vector(this.x + vector.x, this.y + vector.y);
   }
 
   sub(vector: Vector): Vector {
-    this.x -= vector.x;
-    this.y -= vector.y;
-    return this;
+    return new Vector(this.x - vector.x, this.y - vector.y);
   }
 
   mult(scalar: number): Vector {
-    this.x *= scalar;
-    this.y *= scalar;
-    return this;
+    return new Vector(this.x * scalar, this.y * scalar);
   }
 
   div(scalar: number): Vector {
-    this.x /= scalar;
-    this.y /= scalar;
-    return this;
+    return new Vector(this.x / scalar, this.y / scalar);
   }
 
   invert(): Vector {
@@ -87,11 +79,20 @@ export class Vector implements IVector {
     return this;
   }
 
+  normalized(): Vector {
+    const vector = new Vector(this.x, this.y);
+    const mag = vector.magnitude;
+    if (mag > 0) {
+      vector.div(mag);
+    }
+    return vector;
+  }
+
   copy(): Vector {
     return new Vector(this.x, this.y);
   }
 
-  static zero(): Vector {
+  static get zero(): Vector {
     return new Vector(0, 0);
   }
 
@@ -100,5 +101,9 @@ export class Vector implements IVector {
     const y = magnitude * Math.sin(degreeToRadian(angle));
 
     return new Vector(x, y);
+  }
+
+  static clampMagnitude(vector: Vector, max: number): Vector {
+    return Vector.fromPolar(Math.min(vector.magnitude, max), vector.angle);
   }
 }

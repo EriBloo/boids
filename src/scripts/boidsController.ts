@@ -1,6 +1,6 @@
 import { IBoid, Boid } from "./boid";
 
-import { modulo, clamp } from "./utils/functions";
+import { modulo } from "./utils/functions";
 
 import { Vector } from "./utils/vector";
 
@@ -16,9 +16,8 @@ export class BoidsController implements IBoidsController {
   private count: number;
   domainWidth: number;
   domainHeight: number;
-  private maxSpeed = 6;
-  private minSpeed = 4;
   private viewRadius = 50;
+  private avoidRadius = 20;
 
   constructor(count: number, domainWidth: number, domainHeight: number) {
     this.boids = new Array(count).fill({}).map((_, index) => {
@@ -26,7 +25,7 @@ export class BoidsController implements IBoidsController {
         index,
         Math.random() * domainWidth,
         Math.random() * domainHeight,
-        Math.random() * (this.maxSpeed - this.minSpeed) + this.minSpeed,
+        3,
         Math.random() * 360
       );
     });
@@ -42,59 +41,33 @@ export class BoidsController implements IBoidsController {
       modulo(position.y, this.domainHeight)
     );
   }
-  private normalizeVelocity(velocity: Vector): Vector {
-    // locks boids between min and max speed and within 0-359 angle
-    return Vector.fromPolar(
-      clamp(velocity.magnitude, this.minSpeed, this.maxSpeed),
-      modulo(velocity.angle, 360)
-    );
-  }
 
-  private separation(boid: Boid): Vector {
-    // calculates separation between boid and nearby boids
-    const viewRadius = this.viewRadius;
-    return this.boids.reduce((vector: Vector, other: Boid) => {
+  private compute(boid: Boid): void {
+    for (const other of this.boids) {
       if (boid.id !== other.id) {
-        const distanceVector = other.position.sub(boid.position);
-        const sqrDst = Math.pow(distanceVector.magnitude, 2);
+        const dstVector = other.position.sub(boid.position);
 
-        if (sqrDst < Math.pow(viewRadius, 2) && boid.visible(other)) {
-          return vector.sub(distanceVector.div(sqrDst));
-        }
-      }
+        if (dstVector.magnitude < this.viewRadius) {
+          boid.flockmates += 1;
+          boid.flockHeading = boid.flockHeading.add(other.velocity);
+          boid.flockCenter = boid.flockCenter.add(other.position);
 
-      return vector;
-    }, Vector.zero());
-  }
-
-  private alignment(boid: Boid): Vector {
-    const viewRadius = this.viewRadius;
-    return this.boids
-      .reduce((vector: Vector, other: Boid) => {
-        if (boid.id !== other.id) {
-          const distanceVector = other.position.sub(boid.position);
-          const sqrDst = Math.pow(distanceVector.magnitude, 2);
-          if (sqrDst < Math.pow(viewRadius, 2) && boid.visible(other)) {
-            return vector.add(other.velocity);
+          if (dstVector.magnitude < this.avoidRadius) {
+            boid.avoidHeading = boid.avoidHeading.sub(dstVector);
           }
         }
-        return vector;
-      }, Vector.zero())
-      .div(this.boids.length); // fix
+      }
+    }
   }
 
   update(): void {
-    this.boids.map((boid) => {
-      const separation = this.separation(boid);
-      const alignment = this.alignment(boid);
+    for (const boid of this.boids) {
+      boid.reset();
 
-      boid.velocity = boid.velocity.add(separation).add(alignment);
+      this.compute(boid);
 
-      boid.velocity = this.normalizeVelocity(boid.velocity);
-    });
-    this.boids.map((boid) => {
-      boid.move();
+      boid.update();
       boid.position = this.normalizePosition(boid.position);
-    });
+    }
   }
 }

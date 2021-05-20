@@ -40,15 +40,15 @@ test("can see other boid (120 degree vision)", () => {
   const boid2 = new Boid(1, 12, 12, 4, 140);
   const boid3 = new Boid(1, 10, 12, 4, 12);
   const boid4 = new Boid(1, 9, 14, 4, 12);
-  expect(boid1.visible(boid2)).toBeTruthy();
-  expect(boid1.visible(boid3)).toBeTruthy();
-  expect(boid1.visible(boid4)).toBeTruthy();
+  expect(boid1.inSight(boid2)).toBeTruthy();
+  expect(boid1.inSight(boid3)).toBeTruthy();
+  expect(boid1.inSight(boid4)).toBeTruthy();
 });
 
 test("can't see other boid (120 degree vision)", () => {
   const boid1 = new Boid(1, 10, 10, 4, 0);
   const boid2 = new Boid(1, 8, 10, 4, 140);
   const boid3 = new Boid(1, 8, 12, 4, 122);
-  expect(boid1.visible(boid2)).toBeFalsy();
-  expect(boid1.visible(boid3)).toBeFalsy();
+  expect(boid1.inSight(boid2)).toBeFalsy();
+  expect(boid1.inSight(boid3)).toBeFalsy();
 });
