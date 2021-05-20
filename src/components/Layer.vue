@@ -12,7 +12,6 @@
 
 <script lang="ts">
 import { Component, Prop, Watch, Vue } from "vue-property-decorator";
-import Konva from "konva";
 
 import BoidPoly from "./BoidPoly.vue";
 
@@ -30,26 +29,17 @@ export default class Layer extends Vue {
 
   boids = new BoidsController(numBoids, this.width, this.height);
 
+  timer = 0;
+
+  update(): void {
+    this.boids.update();
+
+    cancelAnimationFrame(this.timer);
+    this.timer = requestAnimationFrame(this.update);
+  }
+
   mounted(): void {
-    // setInterval(
-    //   (function (self) {
-    //     return function () {
-    //       self.boids.update();
-    //     };
-    //   })(this),
-    //   1000 / 60
-    // );
-
-    const anim = new Konva.Animation(
-      (function (self) {
-        return function () {
-          self.boids.update();
-        };
-      })(this),
-      this.$refs.layer
-    );
-
-    anim.start();
+    requestAnimationFrame(this.update);
   }
 
   @Watch("width")
