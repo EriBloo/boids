@@ -1,4 +1,5 @@
 export const settings = {
+  numBoids: 100,
   viewRadius: 100,
   avoidRadius: 40,
   viewAngle: 120,

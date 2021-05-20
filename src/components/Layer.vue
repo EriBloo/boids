@@ -17,6 +17,9 @@ import Konva from "konva";
 import BoidPoly from "./BoidPoly.vue";
 
 import { BoidsController } from "../scripts/boidsController";
+import { settings } from "../scripts/settings";
+
+const { numBoids } = settings;
 
 @Component({
   components: { BoidPoly },
@@ -25,7 +28,7 @@ export default class Layer extends Vue {
   @Prop(Number) readonly width!: number;
   @Prop(Number) readonly height!: number;
 
-  boids = new BoidsController(100, this.width, this.height);
+  boids = new BoidsController(numBoids, this.width, this.height);
 
   mounted(): void {
     // setInterval(
