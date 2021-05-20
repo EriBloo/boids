@@ -1,14 +1,14 @@
 import { clamp } from "./utils/functions";
-import { Vector } from "./utils/vector";
+import { Vector2 } from "./utils/vector";
 
 export interface IBoid {
   readonly id: number;
   flockmates: number;
-  flockHeading: Vector;
-  flockCenter: Vector;
-  avoidHeading: Vector;
-  position: Vector;
-  velocity: Vector;
+  flockHeading: Vector2;
+  flockCenter: Vector2;
+  avoidHeading: Vector2;
+  position: Vector2;
+  velocity: Vector2;
   copy(): Boid;
   move(): void;
   inSight(boid: Boid): boolean;
@@ -44,25 +44,25 @@ export class Boid implements IBoid {
     this.speed = speed;
     this.rotation = rotation;
     this.flockmates = 0;
-    this.flockHeading = Vector.zero;
-    this.flockCenter = Vector.zero;
-    this.avoidHeading = Vector.zero;
+    this.flockHeading = Vector2.zero;
+    this.flockCenter = Vector2.zero;
+    this.avoidHeading = Vector2.zero;
   }
 
-  get position(): Vector {
-    return new Vector(this.x, this.y);
+  get position(): Vector2 {
+    return new Vector2(this.x, this.y);
   }
 
-  set position(vector: Vector) {
+  set position(vector: Vector2) {
     this.x = vector.x;
     this.y = vector.y;
   }
 
-  get velocity(): Vector {
-    return Vector.fromPolar(this.speed, this.rotation);
+  get velocity(): Vector2 {
+    return Vector2.fromPolar(this.speed, this.rotation);
   }
 
-  set velocity(vector: Vector) {
+  set velocity(vector: Vector2) {
     this.speed = vector.magnitude;
     this.rotation = vector.angle;
   }
@@ -88,13 +88,13 @@ export class Boid implements IBoid {
     return false;
   }
 
-  private steer(vector: Vector): Vector {
+  private steer(vector: Vector2): Vector2 {
     const v = vector.normalized().mult(this.maxSpeed).sub(this.velocity);
-    return Vector.clampMagnitude(v, this.maxSteer);
+    return Vector2.clampMagnitude(v, this.maxSteer);
   }
 
   update(): void {
-    let acceleration = Vector.zero;
+    let acceleration = Vector2.zero;
 
     if (this.flockmates > 0) {
       this.flockCenter = this.flockCenter
@@ -112,7 +112,7 @@ export class Boid implements IBoid {
 
     this.velocity = this.velocity.add(acceleration);
 
-    this.velocity = Vector.fromPolar(
+    this.velocity = Vector2.fromPolar(
       clamp(this.velocity.magnitude, this.minSpeed, this.maxSpeed),
       this.velocity.angle
     );
@@ -122,8 +122,8 @@ export class Boid implements IBoid {
 
   reset(): void {
     this.flockmates = 0;
-    this.flockHeading = Vector.zero;
-    this.flockCenter = Vector.zero;
-    this.avoidHeading = Vector.zero;
+    this.flockHeading = Vector2.zero;
+    this.flockCenter = Vector2.zero;
+    this.avoidHeading = Vector2.zero;
   }
 }

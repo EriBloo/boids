@@ -2,7 +2,7 @@ import { IBoid, Boid } from "./boid";
 
 import { modulo } from "./utils/functions";
 
-import { Vector } from "./utils/vector";
+import { Vector2 } from "./utils/vector";
 
 export interface IBoidsController {
   boids: IBoid[];
@@ -34,9 +34,9 @@ export class BoidsController implements IBoidsController {
     this.domainHeight = domainHeight;
   }
 
-  private normalizePosition(position: Vector): Vector {
+  private normalizePosition(position: Vector2): Vector2 {
     // prevents boids from going out of bounds
-    return new Vector(
+    return new Vector2(
       modulo(position.x, this.domainWidth),
       modulo(position.y, this.domainHeight)
     );

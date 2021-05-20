@@ -5,16 +5,16 @@ interface IVector {
   y: number;
   magnitude: number;
   angle: number;
-  add(vector: Vector): Vector;
-  sub(vector: Vector): Vector;
-  mult(scalar: number): Vector;
-  div(scalar: number): Vector;
-  invert(): Vector;
-  normalize(): Vector;
-  copy(): Vector;
+  add(vector: Vector2): Vector2;
+  sub(vector: Vector2): Vector2;
+  mult(scalar: number): Vector2;
+  div(scalar: number): Vector2;
+  invert(): Vector2;
+  normalize(): Vector2;
+  copy(): Vector2;
 }
 
-export class Vector implements IVector {
+export class Vector2 implements IVector {
   x;
   y;
 
@@ -49,29 +49,29 @@ export class Vector implements IVector {
     return radianToDegree(angle);
   }
 
-  add(vector: Vector): Vector {
-    return new Vector(this.x + vector.x, this.y + vector.y);
+  add(vector: Vector2): Vector2 {
+    return new Vector2(this.x + vector.x, this.y + vector.y);
   }
 
-  sub(vector: Vector): Vector {
-    return new Vector(this.x - vector.x, this.y - vector.y);
+  sub(vector: Vector2): Vector2 {
+    return new Vector2(this.x - vector.x, this.y - vector.y);
   }
 
-  mult(scalar: number): Vector {
-    return new Vector(this.x * scalar, this.y * scalar);
+  mult(scalar: number): Vector2 {
+    return new Vector2(this.x * scalar, this.y * scalar);
   }
 
-  div(scalar: number): Vector {
-    return new Vector(this.x / scalar, this.y / scalar);
+  div(scalar: number): Vector2 {
+    return new Vector2(this.x / scalar, this.y / scalar);
   }
 
-  invert(): Vector {
+  invert(): Vector2 {
     this.x = -this.x;
     this.y = -this.y;
     return this;
   }
 
-  normalize(): Vector {
+  normalize(): Vector2 {
     const mag = this.magnitude;
     if (mag > 0) {
       this.div(mag);
@@ -79,8 +79,8 @@ export class Vector implements IVector {
     return this;
   }
 
-  normalized(): Vector {
-    const vector = new Vector(this.x, this.y);
+  normalized(): Vector2 {
+    const vector = new Vector2(this.x, this.y);
     const mag = vector.magnitude;
     if (mag > 0) {
       vector.div(mag);
@@ -88,22 +88,22 @@ export class Vector implements IVector {
     return vector;
   }
 
-  copy(): Vector {
-    return new Vector(this.x, this.y);
+  copy(): Vector2 {
+    return new Vector2(this.x, this.y);
   }
 
-  static get zero(): Vector {
-    return new Vector(0, 0);
+  static get zero(): Vector2 {
+    return new Vector2(0, 0);
   }
 
-  static fromPolar(magnitude: number, angle: number): Vector {
+  static fromPolar(magnitude: number, angle: number): Vector2 {
     const x = magnitude * Math.cos(degreeToRadian(angle));
     const y = magnitude * Math.sin(degreeToRadian(angle));
 
-    return new Vector(x, y);
+    return new Vector2(x, y);
   }
 
-  static clampMagnitude(vector: Vector, max: number): Vector {
-    return Vector.fromPolar(Math.min(vector.magnitude, max), vector.angle);
+  static clampMagnitude(vector: Vector2, max: number): Vector2 {
+    return Vector2.fromPolar(Math.min(vector.magnitude, max), vector.angle);
   }
 }
