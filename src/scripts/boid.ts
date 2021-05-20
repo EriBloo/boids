@@ -2,7 +2,15 @@ import { clamp } from "./utils/functions";
 import { Vector2 } from "./utils/vector";
 import { settings } from "./settings";
 
-const { minSpeed, maxSpeed, maxSteer, viewAngle } = settings;
+const {
+  minSpeed,
+  maxSpeed,
+  maxSteer,
+  viewAngle,
+  separationWeight,
+  alignmentWeight,
+  cohesionWeight,
+} = settings;
 
 export interface IBoid {
   readonly id: number;
@@ -96,9 +104,9 @@ export class Boid implements IBoid {
 
       this.flockHeading = this.flockHeading.div(this.flockmates);
 
-      const separation = this.steer(this.avoidHeading).mult(1);
-      const alignment = this.steer(this.flockHeading).mult(1);
-      const cohesion = this.steer(this.flockCenter).mult(1);
+      const separation = this.steer(this.avoidHeading).mult(separationWeight);
+      const alignment = this.steer(this.flockHeading).mult(alignmentWeight);
+      const cohesion = this.steer(this.flockCenter).mult(cohesionWeight);
 
       acceleration = acceleration.add(separation).add(alignment).add(cohesion);
     }
