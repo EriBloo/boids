@@ -1,5 +1,8 @@
 import { clamp } from "./utils/functions";
 import { Vector2 } from "./utils/vector";
+import { settings } from "./settings";
+
+const { minSpeed, maxSpeed, maxSteer, viewAngle } = settings;
 
 export interface IBoid {
   readonly id: number;
@@ -22,26 +25,16 @@ export class Boid implements IBoid {
   private y;
   private rotation;
   private speed;
-  private viewAngle = 120;
-  private minSpeed = 4;
-  private maxSpeed = 6;
-  private maxSteer = 0.5;
   flockmates;
   flockHeading;
   flockCenter;
   avoidHeading;
 
-  constructor(
-    id: number,
-    x: number,
-    y: number,
-    speed: number,
-    rotation: number
-  ) {
+  constructor(id: number, x: number, y: number, rotation: number) {
     this.id = id;
     this.x = x;
     this.y = y;
-    this.speed = speed;
+    this.speed = Math.random() * (maxSpeed - minSpeed) + minSpeed;
     this.rotation = rotation;
     this.flockmates = 0;
     this.flockHeading = Vector2.zero;
@@ -68,7 +61,7 @@ export class Boid implements IBoid {
   }
 
   copy(): Boid {
-    return new Boid(this.id, this.x, this.y, this.speed, this.rotation);
+    return new Boid(this.id, this.x, this.y, this.rotation);
   }
 
   move(): void {
@@ -82,15 +75,15 @@ export class Boid implements IBoid {
     const angle = boid.position.sub(this.position);
     const angleDiff = Math.abs(angle.magnitude - this.rotation);
 
-    if (angleDiff < this.viewAngle || angleDiff > 360 - this.viewAngle) {
+    if (angleDiff < viewAngle || angleDiff > 360 - viewAngle) {
       return true;
     }
     return false;
   }
 
   private steer(vector: Vector2): Vector2 {
-    const v = vector.normalized().mult(this.maxSpeed).sub(this.velocity);
-    return Vector2.clampMagnitude(v, this.maxSteer);
+    const v = vector.normalized().mult(maxSpeed).sub(this.velocity);
+    return Vector2.clampMagnitude(v, maxSteer);
   }
 
   update(): void {
@@ -113,7 +106,7 @@ export class Boid implements IBoid {
     this.velocity = this.velocity.add(acceleration);
 
     this.velocity = Vector2.fromPolar(
-      clamp(this.velocity.magnitude, this.minSpeed, this.maxSpeed),
+      clamp(this.velocity.magnitude, minSpeed, maxSpeed),
       this.velocity.angle
     );
 

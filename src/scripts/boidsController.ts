@@ -1,8 +1,9 @@
 import { IBoid, Boid } from "./boid";
-
 import { modulo } from "./utils/functions";
-
 import { Vector2 } from "./utils/vector";
+import { settings } from "./settings";
+
+const { viewRadius, avoidRadius } = settings;
 
 export interface IBoidsController {
   boids: IBoid[];
@@ -16,8 +17,6 @@ export class BoidsController implements IBoidsController {
   private count: number;
   domainWidth: number;
   domainHeight: number;
-  private viewRadius = 100;
-  private avoidRadius = 40;
 
   constructor(count: number, domainWidth: number, domainHeight: number) {
     this.boids = new Array(count).fill({}).map((_, index) => {
@@ -25,7 +24,6 @@ export class BoidsController implements IBoidsController {
         index,
         Math.random() * domainWidth,
         Math.random() * domainHeight,
-        3,
         Math.random() * 360
       );
     });
@@ -47,12 +45,12 @@ export class BoidsController implements IBoidsController {
       if (boid.id !== other.id) {
         const dstVector = other.position.sub(boid.position);
 
-        if (dstVector.magnitude < this.viewRadius) {
+        if (dstVector.magnitude < viewRadius) {
           boid.flockmates += 1;
           boid.flockHeading = boid.flockHeading.add(other.velocity);
           boid.flockCenter = boid.flockCenter.add(other.position);
 
-          if (dstVector.magnitude < this.avoidRadius) {
+          if (dstVector.magnitude < avoidRadius) {
             boid.avoidHeading = boid.avoidHeading.sub(dstVector);
           }
         }
