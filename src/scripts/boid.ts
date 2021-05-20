@@ -23,9 +23,9 @@ export class Boid implements IBoid {
   private rotation;
   private speed;
   private viewAngle = 120;
-  private minSpeed = 2;
-  private maxSpeed = 5;
-  private maxSteer = 1;
+  private minSpeed = 4;
+  private maxSpeed = 6;
+  private maxSteer = 0.5;
   flockmates;
   flockHeading;
   flockCenter;

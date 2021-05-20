@@ -16,8 +16,8 @@ export class BoidsController implements IBoidsController {
   private count: number;
   domainWidth: number;
   domainHeight: number;
-  private viewRadius = 50;
-  private avoidRadius = 20;
+  private viewRadius = 100;
+  private avoidRadius = 40;
 
   constructor(count: number, domainWidth: number, domainHeight: number) {
     this.boids = new Array(count).fill({}).map((_, index) => {
