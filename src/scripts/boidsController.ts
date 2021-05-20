@@ -44,13 +44,14 @@ export class BoidsController implements IBoidsController {
     for (const other of this.boids) {
       if (boid.id !== other.id) {
         const dstVector = other.position.sub(boid.position);
+        const sqrDst = dstVector.x * dstVector.x + dstVector.y * dstVector.y;
 
-        if (dstVector.magnitude < viewRadius) {
+        if (sqrDst < viewRadius * viewRadius) {
           boid.flockmates += 1;
           boid.flockHeading = boid.flockHeading.add(other.velocity);
           boid.flockCenter = boid.flockCenter.add(other.position);
 
-          if (dstVector.magnitude < avoidRadius) {
+          if (sqrDst < avoidRadius * avoidRadius) {
             boid.avoidHeading = boid.avoidHeading.sub(dstVector);
           }
         }
