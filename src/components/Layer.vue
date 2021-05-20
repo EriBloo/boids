@@ -1,5 +1,5 @@
 <template>
-  <v-layer>
+  <v-layer ref="layer">
     <BoidPoly
       :key="index"
       v-for="(boid, index) in boids.boids"
@@ -12,6 +12,7 @@
 
 <script lang="ts">
 import { Component, Prop, Watch, Vue } from "vue-property-decorator";
+import Konva from "konva";
 
 import BoidPoly from "./BoidPoly.vue";
 
@@ -24,17 +25,28 @@ export default class Layer extends Vue {
   @Prop(Number) readonly width!: number;
   @Prop(Number) readonly height!: number;
 
-  boids = new BoidsController(100, this.width, this.height);
+  boids = new BoidsController(50, this.width, this.height);
 
   mounted(): void {
-    setInterval(
+    // setInterval(
+    //   (function (self) {
+    //     return function () {
+    //       self.boids.update();
+    //     };
+    //   })(this),
+    //   1000 / 60
+    // );
+
+    const anim = new Konva.Animation(
       (function (self) {
         return function () {
           self.boids.update();
         };
       })(this),
-      1000 / 60
+      this.$refs.layer
     );
+
+    anim.start();
   }
 
   @Watch("width")
