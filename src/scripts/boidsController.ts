@@ -3,7 +3,7 @@ import { modulo } from "./utils/functions";
 import { Vector2 } from "./utils/vector";
 import { settings } from "./settings";
 
-const { viewRadius, avoidRadius } = settings;
+const { numBoids, breakFactor, viewRadius, avoidRadius } = settings;
 
 export interface IBoidsController {
   boids: IBoid[];
@@ -42,6 +42,10 @@ export class BoidsController implements IBoidsController {
 
   private compute(boid: Boid): void {
     for (const other of this.boids) {
+      if (boid.flockmates > numBoids * breakFactor) {
+        // naive way to improve performance at the cost of accuracy
+        break;
+      }
       if (boid.id !== other.id) {
         const dstVector = other.position.sub(boid.position);
         const sqrDst = dstVector.x * dstVector.x + dstVector.y * dstVector.y;
