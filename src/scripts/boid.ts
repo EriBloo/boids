@@ -18,6 +18,7 @@ export interface IBoid {
   flockHeading: Vector2;
   flockCenter: Vector2;
   avoidHeading: Vector2;
+  avoidWalls: Vector2;
   position: Vector2;
   velocity: Vector2;
   copy(): Boid;
@@ -37,6 +38,7 @@ export class Boid implements IBoid {
   flockHeading;
   flockCenter;
   avoidHeading;
+  avoidWalls;
 
   constructor(id: number, x: number, y: number, rotation: number) {
     this.id = id;
@@ -48,6 +50,7 @@ export class Boid implements IBoid {
     this.flockHeading = Vector2.zero;
     this.flockCenter = Vector2.zero;
     this.avoidHeading = Vector2.zero;
+    this.avoidWalls = Vector2.zero;
   }
 
   get position(): Vector2 {
@@ -97,6 +100,9 @@ export class Boid implements IBoid {
   update(): void {
     let acceleration = Vector2.zero;
 
+    const contain = this.steer(this.avoidWalls);
+    acceleration = acceleration.add(contain);
+
     if (this.flockmates > 0) {
       this.flockCenter = this.flockCenter
         .div(this.flockmates)
@@ -126,5 +132,6 @@ export class Boid implements IBoid {
     this.flockHeading = Vector2.zero;
     this.flockCenter = Vector2.zero;
     this.avoidHeading = Vector2.zero;
+    this.avoidWalls = Vector2.zero;
   }
 }

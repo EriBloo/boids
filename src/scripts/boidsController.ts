@@ -1,6 +1,4 @@
 import { IBoid, Boid } from "./boid";
-import { modulo } from "./utils/functions";
-import { Vector2 } from "./utils/vector";
 import { settings } from "./settings";
 
 const { numBoids, breakFactor, viewRadius, avoidRadius } = settings;
@@ -32,15 +30,18 @@ export class BoidsController implements IBoidsController {
     this.domainHeight = domainHeight;
   }
 
-  private normalizePosition(position: Vector2): Vector2 {
-    // prevents boids from going out of bounds
-    return new Vector2(
-      modulo(position.x, this.domainWidth),
-      modulo(position.y, this.domainHeight)
-    );
-  }
-
   private compute(boid: Boid): void {
+    if (boid.position.x < 100) {
+      boid.avoidWalls.x = 100;
+    } else if (boid.position.x > this.domainWidth - 100) {
+      boid.avoidWalls.x = -100;
+    }
+    if (boid.position.y < 100) {
+      boid.avoidWalls.y = 100;
+    } else if (boid.position.y > this.domainHeight - 100) {
+      boid.avoidWalls.y = -100;
+    }
+
     for (const other of this.boids) {
       if (boid.flockmates > numBoids * breakFactor) {
         // naive way to improve performance at the cost of accuracy
@@ -70,7 +71,6 @@ export class BoidsController implements IBoidsController {
       this.compute(boid);
 
       boid.update();
-      boid.position = this.normalizePosition(boid.position);
     }
   }
 }
