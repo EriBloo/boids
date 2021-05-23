@@ -24,7 +24,7 @@ export class Vector2 implements IVector {
   }
 
   get magnitude(): number {
-    return Math.sqrt(this.x * this.x + this.y * this.y);
+    return Math.hypot(this.x, this.y);
   }
 
   get angle(): number {
