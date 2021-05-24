@@ -6,7 +6,6 @@ const {
   minSpeed,
   maxSpeed,
   maxSteer,
-  viewAngle,
   separationWeight,
   alignmentWeight,
   cohesionWeight,
@@ -23,7 +22,6 @@ export interface IBoid {
   velocity: Vector2;
   copy(): Boid;
   move(): void;
-  inSight(boid: Boid): boolean;
   update(): void;
   reset(): void;
 }
@@ -78,18 +76,6 @@ export class Boid implements IBoid {
   move(): void {
     // move boid
     this.position = this.position.add(this.velocity);
-  }
-
-  inSight(boid: Boid): boolean {
-    // FIX
-    // check if other boid is visible by this boid
-    const angle = boid.position.sub(this.position);
-    const angleDiff = Math.abs(angle.magnitude - this.rotation);
-
-    if (angleDiff < viewAngle || angleDiff > 360 - viewAngle) {
-      return true;
-    }
-    return false;
   }
 
   private steer(vector: Vector2): Vector2 {

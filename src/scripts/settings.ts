@@ -3,7 +3,6 @@ export const settings = {
   breakFactor: 0.15, // improves performance at the cost of calculations accuracy: breakFactor * numBoids = boid won't check more flockmates than this
   viewRadius: 100, // boids in this radius will be included in calculations
   avoidRadius: 40, // boids in this radius will be avoided
-  viewAngle: 120, // angle to look for boids (NOT IMPLEMENTED)
   minSpeed: 6, // min speed of boid
   maxSpeed: 10, // max speed of boid
   maxSteer: 0.5, // max turn speed of boid

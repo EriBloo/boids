@@ -1,10 +1,10 @@
-import { IBoid, Boid } from "./boid";
+import { Boid } from "./boid";
 import { settings } from "./settings";
 
 const { numBoids, breakFactor, viewRadius, avoidRadius } = settings;
 
 export interface IBoidsController {
-  boids: IBoid[];
+  boids: Boid[];
   domainWidth: number;
   domainHeight: number;
   update(): void;
@@ -30,18 +30,20 @@ export class BoidsController implements IBoidsController {
     this.domainHeight = domainHeight;
   }
 
-  private compute(boid: Boid): void {
-    if (boid.position.x < 100) {
+  private computeAvoidWalls(boid: Boid): void {
+    if (boid.position.x < viewRadius) {
       boid.avoidWalls.x = 100;
-    } else if (boid.position.x > this.domainWidth - 100) {
+    } else if (boid.position.x > this.domainWidth - viewRadius) {
       boid.avoidWalls.x = -100;
     }
-    if (boid.position.y < 100) {
+    if (boid.position.y < viewRadius) {
       boid.avoidWalls.y = 100;
-    } else if (boid.position.y > this.domainHeight - 100) {
+    } else if (boid.position.y > this.domainHeight - viewRadius) {
       boid.avoidWalls.y = -100;
     }
+  }
 
+  private computeInterractionWithOther(boid: Boid): void {
     for (const other of this.boids) {
       if (boid.flockmates > numBoids * breakFactor) {
         // naive way to improve performance at the cost of accuracy
@@ -62,6 +64,12 @@ export class BoidsController implements IBoidsController {
         }
       }
     }
+  }
+
+  private compute(boid: Boid): void {
+    this.computeAvoidWalls(boid);
+
+    this.computeInterractionWithOther(boid);
   }
 
   update(): void {
