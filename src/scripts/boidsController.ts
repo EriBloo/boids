@@ -12,20 +12,27 @@ export interface IBoidsController {
 
 export class BoidsController implements IBoidsController {
   boids: Boid[];
-  private count: number;
   domainWidth: number;
   domainHeight: number;
 
   constructor(count: number, domainWidth: number, domainHeight: number) {
     this.boids = new Array(count).fill({}).map((_, index) => {
-      return new Boid(
-        index,
-        Math.random() * domainWidth,
-        Math.random() * domainHeight,
-        Math.random() * 360
+      let boid;
+      do {
+        boid = new Boid(
+          index,
+          Math.random() * (domainWidth + 200) - 100,
+          Math.random() * (domainHeight + 200) - 100,
+          Math.random() * 360
+        );
+      } while (
+        boid.position.x > 0 &&
+        boid.position.x < domainWidth &&
+        boid.position.y > 0 &&
+        boid.position.y < domainHeight
       );
+      return boid;
     });
-    this.count = count;
     this.domainWidth = domainWidth;
     this.domainHeight = domainHeight;
   }
