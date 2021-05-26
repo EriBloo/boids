@@ -53,10 +53,10 @@ export class Polygon extends Obstacle {
 export class Square extends Polygon {
   // construct square from 2 diagonal points
   constructor(p1: Vector2, p3: Vector2) {
-    const c = new Vector2((p1.x + p3.x) / 2, (p1.y + p3.y) / 2);
-    const d = new Vector2((p1.x - p3.x) / 2, (p1.y - p3.y) / 2);
-    const p2 = new Vector2(c.x - d.y, c.y + d.y);
-    const p4 = new Vector2(c.x + d.y, c.y - d.y);
+    const c = p1.add(p3).div(2);
+    const d = p1.sub(p3).div(2);
+    const p2 = new Vector2(c.x - d.y, c.y + d.x);
+    const p4 = new Vector2(c.x + d.y, c.y - d.x);
 
     super(p1, p2, p3, p4);
   }
