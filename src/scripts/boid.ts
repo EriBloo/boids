@@ -86,8 +86,10 @@ export class Boid implements IBoid {
   update(): void {
     let acceleration = Vector2.zero;
 
-    const contain = this.steer(this.avoidWalls);
-    acceleration = acceleration.add(contain);
+    if (!Vector2.isZero(this.avoidWalls)) {
+      const contain = this.steer(this.avoidWalls);
+      acceleration = acceleration.add(contain);
+    }
 
     if (this.flockmates > 0) {
       this.flockCenter = this.flockCenter

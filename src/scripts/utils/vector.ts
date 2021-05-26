@@ -106,4 +106,7 @@ export class Vector2 implements IVector {
   static clampMagnitude(vector: Vector2, max: number): Vector2 {
     return Vector2.fromPolar(Math.min(vector.magnitude, max), vector.angle);
   }
-}
+
+  static isZero(vector: Vector2): boolean {
+    return vector.x === 0 && vector.y === 0;
+  }
