@@ -1,5 +1,5 @@
 import { Boid } from "./boid";
-import { Obstacle, Square, Polygon, Line } from "./obstacles";
+import { Obstacle, Square, Polygon } from "./obstacles";
 import { Ray } from "./utils/ray";
 import { Vector2 } from "./utils/vector";
 import { settings } from "./settings";
@@ -45,6 +45,14 @@ export class BoidsController implements IBoidsController {
         new Vector2(domainWidth / 2 - 50, domainHeight - 200),
         new Vector2(domainWidth / 2 + 50, domainHeight - 200),
         new Vector2(domainWidth / 2 + 50, 200)
+      ),
+      new Square(
+        new Vector2(domainWidth / 4 + 100, domainHeight / 2),
+        new Vector2(domainWidth / 4 - 100, domainHeight / 2)
+      ),
+      new Square(
+        new Vector2((3 * domainWidth) / 4 + 100, domainHeight / 2),
+        new Vector2((3 * domainWidth) / 4 - 100, domainHeight / 2)
       ),
     ];
     this.domainWidth = domainWidth;
