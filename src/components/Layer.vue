@@ -1,6 +1,6 @@
 <template>
   <v-layer ref="layer">
-    <BoidPoly
+    <Boid
       :key="index"
       v-for="(boid, index) in boids.boids"
       :posX="boid.position.x"
@@ -13,7 +13,7 @@
 <script lang="ts">
 import { Component, Prop, Watch, Vue } from "vue-property-decorator";
 
-import BoidPoly from "./BoidPoly.vue";
+import Boid from "./Boid.vue";
 
 import { BoidsController } from "../scripts/boidsController";
 import { settings } from "../scripts/settings";
@@ -21,7 +21,7 @@ import { settings } from "../scripts/settings";
 const { numBoids } = settings;
 
 @Component({
-  components: { BoidPoly },
+  components: { Boid },
 })
 export default class Layer extends Vue {
   @Prop(Number) readonly width!: number;

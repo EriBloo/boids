@@ -8,7 +8,7 @@ import { Component, Prop, Vue } from "vue-property-decorator";
 import { ShapeConfig } from "konva/types/Shape";
 
 @Component
-export default class BoidPoly extends Vue {
+export default class Boid extends Vue {
   @Prop(Number) readonly posX!: number;
   @Prop(Number) readonly posY!: number;
   @Prop(Number) readonly rotation!: number;
