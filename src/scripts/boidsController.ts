@@ -25,8 +25,8 @@ export class BoidsController implements IBoidsController {
       do {
         boid = new Boid(
           index,
-          Math.random() * (domainWidth + 200) - 100,
-          Math.random() * (domainHeight + 200) - 100,
+          Math.random() * (domainWidth + 400) - 200,
+          Math.random() * (domainHeight + 400) - 200,
           Math.random() * 360
         );
       } while (
