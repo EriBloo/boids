@@ -110,3 +110,11 @@ export class Vector2 implements IVector {
   static isZero(vector: Vector2): boolean {
     return vector.x === 0 && vector.y === 0;
   }
+
+  static areEqual(vector1: Vector2, vector2: Vector2): boolean {
+    return vector1.x === vector2.x && vector1.y === vector2.y;
+  }
+  static copy(vector: Vector2): Vector2 {
+    return new Vector2(vector.x, vector.y);
+  }
+}

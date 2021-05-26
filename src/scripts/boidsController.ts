@@ -1,9 +1,11 @@
 import { Boid } from "./boid";
 import { Obstacle, Square, Polygon, Line } from "./obstacles";
+import { Ray } from "./utils/ray";
 import { Vector2 } from "./utils/vector";
 import { settings } from "./settings";
 
-const { numBoids, breakFactor, viewRadius, avoidRadius } = settings;
+const { numBoids, breakFactor, viewRadius, avoidRadius, collisionRadius } =
+  settings;
 
 export interface IBoidsController {
   boids: Boid[];
@@ -85,10 +87,53 @@ export class BoidsController implements IBoidsController {
     }
   }
 
+  private computeAvoidObstacles(boid: Boid): void {
+    function headingForCollision(ray: Ray, obstacles: Obstacle[]): boolean {
+      for (const obstacle of obstacles) {
+        if (ray.obstacleCollision(obstacle)) {
+          return true;
+        }
+      }
+      return false;
+    }
+    function* generateAngle() {
+      let angle = 0;
+      const angleChange = 10;
+      for (let i = 1; i <= 180 / angleChange; i += angleChange) {
+        angle += i * angleChange * (i % 2 === 0 ? -1 : 1);
+        yield angle;
+      }
+    }
+
+    let ray = new Ray(
+      boid.position,
+      Vector2.fromPolar(collisionRadius, boid.velocity.angle)
+    );
+    const dirCopy = Vector2.copy(ray.dir);
+    const angleGenertor = generateAngle();
+
+    while (headingForCollision(ray, this.obstacles)) {
+      const angleModifier = angleGenertor.next().value;
+      if (!angleModifier) {
+        break;
+      }
+      ray = new Ray(
+        ray.pos,
+        Vector2.fromPolar(collisionRadius, ray.dir.angle + angleModifier)
+      );
+    }
+
+    if (!Vector2.areEqual(ray.dir, dirCopy)) {
+      boid.avoidObstacles = ray.dir;
+    }
+  }
+
   private compute(boid: Boid): void {
     this.computeAvoidWalls(boid);
 
     this.computeInterractionWithOther(boid);
+
+    this.computeAvoidObstacles(boid);
   }
 
   update(): void {

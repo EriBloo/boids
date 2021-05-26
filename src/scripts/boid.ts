@@ -9,6 +9,7 @@ const {
   separationWeight,
   alignmentWeight,
   cohesionWeight,
+  collisionWeight,
 } = settings;
 
 export interface IBoid {
@@ -18,6 +19,7 @@ export interface IBoid {
   flockCenter: Vector2;
   avoidHeading: Vector2;
   avoidWalls: Vector2;
+  avoidObstacles: Vector2;
   position: Vector2;
   velocity: Vector2;
   copy(): Boid;
@@ -37,6 +39,7 @@ export class Boid implements IBoid {
   flockCenter;
   avoidHeading;
   avoidWalls;
+  avoidObstacles;
 
   constructor(id: number, x: number, y: number, rotation: number) {
     this.id = id;
@@ -49,6 +52,7 @@ export class Boid implements IBoid {
     this.flockCenter = Vector2.zero;
     this.avoidHeading = Vector2.zero;
     this.avoidWalls = Vector2.zero;
+    this.avoidObstacles = Vector2.zero;
   }
 
   get position(): Vector2 {
@@ -105,6 +109,11 @@ export class Boid implements IBoid {
       acceleration = acceleration.add(separation).add(alignment).add(cohesion);
     }
 
+    if (!Vector2.isZero(this.avoidObstacles)) {
+      const collision = this.steer(this.avoidObstacles).mult(collisionWeight);
+      acceleration = acceleration.add(collision);
+    }
+
     this.velocity = this.velocity.add(acceleration);
 
     this.velocity = Vector2.fromPolar(
@@ -121,5 +130,6 @@ export class Boid implements IBoid {
     this.flockCenter = Vector2.zero;
     this.avoidHeading = Vector2.zero;
     this.avoidWalls = Vector2.zero;
+    this.avoidObstacles = Vector2.zero;
   }
 }
