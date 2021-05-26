@@ -1,10 +1,13 @@
 import { Boid } from "./boid";
+import { Obstacle, Square, Polygon, Line } from "./obstacles";
+import { Vector2 } from "./utils/vector";
 import { settings } from "./settings";
 
 const { numBoids, breakFactor, viewRadius, avoidRadius } = settings;
 
 export interface IBoidsController {
   boids: Boid[];
+  obstacles: Obstacle[];
   domainWidth: number;
   domainHeight: number;
   update(): void;
@@ -12,6 +15,7 @@ export interface IBoidsController {
 
 export class BoidsController implements IBoidsController {
   boids: Boid[];
+  obstacles: Obstacle[];
   domainWidth: number;
   domainHeight: number;
 
@@ -33,6 +37,14 @@ export class BoidsController implements IBoidsController {
       );
       return boid;
     });
+    this.obstacles = [
+      new Polygon(
+        new Vector2(domainWidth / 2 - 50, 200),
+        new Vector2(domainWidth / 2 - 50, domainHeight - 200),
+        new Vector2(domainWidth / 2 + 50, domainHeight - 200),
+        new Vector2(domainWidth / 2 + 50, 200)
+      ),
+    ];
     this.domainWidth = domainWidth;
     this.domainHeight = domainHeight;
   }
