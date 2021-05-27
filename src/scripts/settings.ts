@@ -9,6 +9,6 @@ export const settings = {
   maxSteer: 0.5, // max turn speed of boid
   separationWeight: 1, // weight to adjust separation
   alignmentWeight: 1, // weight to adjust alignment
-  cohesionWeight: 0.7, // weight to adjust cohesion
+  cohesionWeight: 0.6, // weight to adjust cohesion
   collisionWeight: 10, // weight to avoid obstacles
 };

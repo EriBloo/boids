@@ -31,8 +31,8 @@ export default class Boid extends Vue {
 
   get polygonConfig(): ShapeConfig {
     return {
-      x: this.posX,
-      y: this.posY,
+      x: Math.floor(this.posX),
+      y: Math.floor(this.posY),
       rotation: this.rotation + 90,
       sides: 3,
       width: 20,

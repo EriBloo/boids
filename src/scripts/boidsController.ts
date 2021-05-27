@@ -110,7 +110,7 @@ export class BoidsController implements IBoidsController {
       Vector2.fromPolar(collisionRadius, boid.velocity.angle)
     );
     const dirCopy = Vector2.copy(ray.dir);
-    let angleModifier = 10;
+    let angleModifier = 20;
 
     if (headingForCollision(ray, this.obstacles)) {
       while (angleModifier < 100) {
@@ -131,7 +131,7 @@ export class BoidsController implements IBoidsController {
           ray = ccwRay;
           break;
         }
-        angleModifier += 10;
+        angleModifier += 20;
       }
     }
 
