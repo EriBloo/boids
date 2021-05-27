@@ -104,31 +104,35 @@ export class BoidsController implements IBoidsController {
       }
       return false;
     }
-    function* generateAngle() {
-      let angle = 0;
-      const angleChange = 10;
-      for (let i = 1; i <= 180 / angleChange; i += angleChange) {
-        angle += i * angleChange * (i % 2 === 0 ? -1 : 1);
-        yield angle;
-      }
-    }
 
     let ray = new Ray(
       boid.position,
       Vector2.fromPolar(collisionRadius, boid.velocity.angle)
     );
     const dirCopy = Vector2.copy(ray.dir);
-    const angleGenertor = generateAngle();
+    let angleModifier = 10;
 
-    while (headingForCollision(ray, this.obstacles)) {
-      const angleModifier = angleGenertor.next().value;
-      if (!angleModifier) {
-        break;
+    if (headingForCollision(ray, this.obstacles)) {
+      while (angleModifier < 100) {
+        const cwRay = new Ray(
+          ray.pos,
+          Vector2.fromPolar(collisionRadius, ray.dir.angle - angleModifier)
+        );
+        const ccwRay = new Ray(
+          ray.pos,
+          Vector2.fromPolar(collisionRadius, ray.dir.angle + angleModifier)
+        );
+        const cwCollision = headingForCollision(cwRay, this.obstacles);
+        const ccwCollision = headingForCollision(ccwRay, this.obstacles);
+        if (!cwCollision) {
+          ray = cwRay;
+          break;
+        } else if (!ccwCollision) {
+          ray = ccwRay;
+          break;
+        }
+        angleModifier += 10;
       }
-      ray = new Ray(
-        ray.pos,
-        Vector2.fromPolar(collisionRadius, ray.dir.angle + angleModifier)
-      );
     }
 
     if (!Vector2.areEqual(ray.dir, dirCopy)) {

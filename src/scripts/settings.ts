@@ -10,5 +10,5 @@ export const settings = {
   separationWeight: 1, // weight to adjust separation
   alignmentWeight: 1, // weight to adjust alignment
   cohesionWeight: 0.7, // weight to adjust cohesion
-  collisionWeight: 6, // weight to avoid obstacles
+  collisionWeight: 10, // weight to avoid obstacles
 };
