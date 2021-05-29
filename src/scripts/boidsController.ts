@@ -40,6 +40,7 @@ export class BoidsController implements IBoidsController {
       return boid;
     });
     this.obstacles = [
+      // preset 1
       new Polygon(
         new Vector2(domainWidth / 2 - 50, 200),
         new Vector2(domainWidth / 2 - 50, domainHeight - 200),
@@ -54,6 +55,39 @@ export class BoidsController implements IBoidsController {
         new Vector2((3 * domainWidth) / 4 + 100, domainHeight / 2),
         new Vector2((3 * domainWidth) / 4 - 100, domainHeight / 2)
       ),
+      // preset 2
+      // new Square(
+      //   new Vector2(domainWidth / 8 + 100, domainHeight / 4),
+      //   new Vector2(domainWidth / 8 - 100, domainHeight / 4)
+      // ),
+      // new Square(
+      //   new Vector2((3 * domainWidth) / 8 + 100, domainHeight / 4),
+      //   new Vector2((3 * domainWidth) / 8 - 100, domainHeight / 4)
+      // ),
+      // new Square(
+      //   new Vector2((5 * domainWidth) / 8 + 100, domainHeight / 4),
+      //   new Vector2((5 * domainWidth) / 8 - 100, domainHeight / 4)
+      // ),
+      // new Square(
+      //   new Vector2((7 * domainWidth) / 8 + 100, domainHeight / 4),
+      //   new Vector2((7 * domainWidth) / 8 - 100, domainHeight / 4)
+      // ),
+      // new Square(
+      //   new Vector2(domainWidth / 8 + 100, (3 * domainHeight) / 4),
+      //   new Vector2(domainWidth / 8 - 100, (3 * domainHeight) / 4)
+      // ),
+      // new Square(
+      //   new Vector2((3 * domainWidth) / 8 + 100, (3 * domainHeight) / 4),
+      //   new Vector2((3 * domainWidth) / 8 - 100, (3 * domainHeight) / 4)
+      // ),
+      // new Square(
+      //   new Vector2((5 * domainWidth) / 8 + 100, (3 * domainHeight) / 4),
+      //   new Vector2((5 * domainWidth) / 8 - 100, (3 * domainHeight) / 4)
+      // ),
+      // new Square(
+      //   new Vector2((7 * domainWidth) / 8 + 100, (3 * domainHeight) / 4),
+      //   new Vector2((7 * domainWidth) / 8 - 100, (3 * domainHeight) / 4)
+      // ),
     ];
     this.domainWidth = domainWidth;
     this.domainHeight = domainHeight;
