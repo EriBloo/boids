@@ -11,7 +11,6 @@ interface IVector {
   div(scalar: number): Vector2;
   invert(): Vector2;
   normalize(): Vector2;
-  copy(): Vector2;
 }
 
 export class Vector2 implements IVector {
@@ -86,10 +85,6 @@ export class Vector2 implements IVector {
       vector.div(mag);
     }
     return vector;
-  }
-
-  copy(): Vector2 {
-    return new Vector2(this.x, this.y);
   }
 
   static get zero(): Vector2 {
