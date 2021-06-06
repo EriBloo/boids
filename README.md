@@ -1,24 +1,9 @@
-# boids
+# Boids simulation
 
-## Project setup
-```
-npm install
-```
+This is a simulation showing emergance of complex patterns from just 3 simple rules:
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+* separation - boids try not to crash into each other
+* alignment - boids try to match the velocity of nearby flockmates
+* cohesion - boids try to steer towards average center of nearby flockmates
 
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+Just those rules can create fascinating behavior resembling flock of birds or school of fish.
